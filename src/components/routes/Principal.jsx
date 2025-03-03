@@ -1,11 +1,11 @@
 import React from 'react';
-import Login from '../pages/login';
+import logo from "../../../public/logo.jfif"
 
 const Principal = () => {
     return (
-        <section className='mainPage d-flex justify-content-center align-content-center flex-wrap'>
+        <section className='mainPage d-flex justify-content-center align-content-center flex-wrap '>
         
-        <Login></Login>
+        <img src={logo} alt="" />
         
         </section>
     );

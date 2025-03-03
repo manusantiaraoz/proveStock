@@ -1,7 +1,8 @@
 const Footer = () => {
     return (
-        <footer className="text-center bg-info-subtle  py-4">
-            <p>&copy; Todos los derechos reservados</p>
+        <footer className="text-center bg-dark text-light py-4">
+            <p>proyecto final 2025</p>
+            <p>&copy; Santi Araoz Daniel Emmanuel</p>
         </footer>
     );
 };

@@ -1,9 +1,6 @@
 const URL_AUTH = import.meta.env.VITE_API_AUTH;
 
-export const loginApi = async(credenciales) =>{
-    console.log("ANTES DEL ENVIAR: ",credenciales);
-    console.log("url", URL_AUTH);
-    
+export const loginApi = async(credenciales) =>{ 
     try{
     const log = await fetch(URL_AUTH,{
         method: "POST",
