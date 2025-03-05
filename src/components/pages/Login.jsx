@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import logo from "../../../public/logo4.jfif";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({setUsuarioLogueado}) => {
+const Login = ({setUsuarioLogeado}) => {
   const {
     register,
     handleSubmit,
@@ -15,7 +15,8 @@ const Login = ({setUsuarioLogueado}) => {
 
   const navegacion = useNavigate()
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data, e) => {
+    e.preventDefault()
     try {
       await loggerUser(data);
     } catch (error) {
@@ -40,8 +41,8 @@ const Login = ({setUsuarioLogueado}) => {
         title: "bienvenido",
         text: `hola ${user.name} que tengas una jornada productiva`,
       });
+      setUsuarioLogeado(user)
       navegacion('/')
-      setUsuarioLogueado(user)
     } catch (e) {
       console.error("Error en loggerUser:", e);
       Swal.fire({

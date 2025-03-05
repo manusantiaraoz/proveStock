@@ -13,3 +13,24 @@ min-width: 100%;
 .fondoLogin{
   background-color: #faf5e5;
 }
+.colorPrimario{
+  background-color: #4a6572;
+}
+.colorPrimarioTexto{
+  color:#4a6572
+}
+.colorSecundario{
+  background-color: #81a1c1;
+}
+.colorSecundarioTexto{
+  color:#81a1c1;
+}
+.colorAcento{
+  background-color: #d08770;
+}
+.colorAcentoTexto{
+  color:#d08770;
+}
+.colorTexto{
+  color: #2e3440;
+}
