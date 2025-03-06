@@ -2,6 +2,7 @@ import React from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import UserTab from './UserTab';
+import ProductTab from './product/ProductTab';
 
 const Panel = ({usuarioLogeado, actualizarDatos}) => {
   console.log("desde panel", usuarioLogeado);
@@ -9,23 +10,23 @@ const Panel = ({usuarioLogeado, actualizarDatos}) => {
     return (
         <section className='mainPage'>
         <Tabs
-      defaultActiveKey="profile"
+      defaultActiveKey="home"
       id="uncontrolled-tab-example"
       className="mb-3 bg-dark"
     >
       <Tab eventKey="home" title="Usuario" className=''>
         <UserTab usuarioLogeado={usuarioLogeado} actualizarDatos={actualizarDatos}/>
       </Tab>
-      <Tab eventKey="profile" title="proveedores">
+      <Tab eventKey="proveedores" title="proveedores">
         Tab content for Profile
       </Tab>
-      <Tab eventKey="contact" title="Productos">
+      <Tab eventKey="productos" title="Productos">
+        <ProductTab usuarioLogeado={usuarioLogeado}></ProductTab>
+      </Tab>
+      <Tab eventKey="clientes" title="Clientes">
         Tab content for Contact
       </Tab>
-      <Tab eventKey="contact" title="Clientes">
-        Tab content for Contact
-      </Tab>
-      <Tab eventKey="contact" title="presupuestos">
+      <Tab eventKey="presupuesto" title="presupuestos">
         Tab content for Contact
       </Tab>
     </Tabs>

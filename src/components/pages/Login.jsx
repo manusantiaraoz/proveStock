@@ -42,7 +42,7 @@ const Login = ({setUsuarioLogeado}) => {
         text: `hola ${user.name} que tengas una jornada productiva`,
       });
       setUsuarioLogeado(user)
-      navegacion('/')
+      navegacion('/user')
     } catch (e) {
       console.error("Error en loggerUser:", e);
       Swal.fire({
