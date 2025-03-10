@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { modUser } from "../../../helpers/user";
 import Swal from "sweetalert2";
 
-function ModUserModal({ show, handleClose, userData, setUserData, actualizarDatos,jwt }) {
+function ModUserModal({ show, handleClose, userData, fetchDataUser, actualizarDatos,jwt }) {
   const {
     register,
     handleSubmit,
@@ -26,11 +26,10 @@ function ModUserModal({ show, handleClose, userData, setUserData, actualizarDato
     e.preventDefault();
     try {
       const result = await modUser(userData.id,jwt, data)
-      console.log("esto devuelve result:",data);
       if(!result){
         throw new Error("no se pudo actualizar")
       }
-      setUserData(result.data);
+      fetchDataUser();
       actualizarDatos(result.data);
       Swal.fire({
         title: "datos de usuario actualizado!",

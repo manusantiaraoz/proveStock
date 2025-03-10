@@ -3,13 +3,11 @@ import ProductItem from "./ProductItem";
 import { delProduct, getProduct } from "../../../helpers/product";
 import Swal from "sweetalert2";
 import ModProduct from "./modalProduct";
-import { getProvider } from "../../../helpers/provider";
 
-const ProductTab = () => {
+
+const ProductTab = ({provider, product ,fetchDataProduct}) => {
   const jwt = sessionStorage.getItem("accessToken") || null;
-  const [product, setProduct] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [provider, setProvider] = useState([])
   const [productToEdit, setProductToEdit]=useState(null)
   const [isEditing, setIsEditing] = useState(false);
   
@@ -20,22 +18,12 @@ const ProductTab = () => {
 }
   const handleCloseModal = () => setShowModal(false);
 
-  const fetchData = async () => {
-    try {
-      const result = await getProduct(jwt);
-      if (result && result.data) {
-        setProduct(result.data);
-      }
-    } catch (e) {
-      console.error("Error fetching product data:", e);
-    }
-  };
 
   const EliminarProduct = async (id) => {
     try {
       const status = await Swal.fire({
         title: "¿Seguro quieres borrarlo?",
-        text: "El usuario se eliminaría permanentemente.",
+        text: "El producto se eliminaría permanentemente.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d08799",
@@ -50,7 +38,7 @@ const ProductTab = () => {
             title: "producto borrado",
             icon: "success",
           });
-          fetchData();
+          fetchDataProduct();
         }
       }
     } catch (error) {
@@ -58,30 +46,18 @@ const ProductTab = () => {
     }
   };
 
-  const listProv = async ()=>{
-    try {
-        const result = await getProvider(jwt);
-        if (result && result.data) {
-          setProvider(result.data);
-        }
-      } catch (e) {
-        console.error("Error fetching provider data:", e);
-      }
-  }
-
-
   useEffect(() => {
-    fetchData();
-    listProv()
+    fetchDataProduct();
   }, []);
   return (
     <article className="container">
       <button className="btn btn-primary" onClick={() => handleShowModal(null, false)}>Crear Producto</button>
-
+    
+      
       {product.map((prod, posicion) => (
         <ProductItem product={prod} key={posicion} EliminarProduct={EliminarProduct} onEdit={handleShowModal}></ProductItem>
       ))}
-      <ModProduct show={showModal} handleClose={handleCloseModal} product={productToEdit} provider={provider} fetchData={fetchData} jwt={jwt} isEditing={isEditing}></ModProduct>
+      <ModProduct show={showModal} handleClose={handleCloseModal} product={productToEdit} provider={provider} fetchData={fetchDataProduct} jwt={jwt} isEditing={isEditing}></ModProduct>
     </article>
   );
 };

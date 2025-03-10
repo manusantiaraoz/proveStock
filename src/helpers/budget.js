@@ -11,7 +11,7 @@ export const getBudget = async (jwt) => {
       },
     });
 
-    return { data: response.data }; 
+    return { data: response.data.dataBudget }; 
   } catch (error) {
     console.error(error);
     
@@ -34,9 +34,9 @@ export const delBudget = async (id,jwt) => {
     return null; 
   }
 };
-export const modBudget = async (id,jwt, body) => {
+export const conBudget = async (id,jwt) => {
   try {
-    const response = await axios.patch(`${URL_BUDGET}/${id}`,body, { 
+    const response = await axios.post(`${URL_BUDGET}/confirm/${id}`,{}, { 
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${jwt}`,
@@ -49,6 +49,33 @@ export const modBudget = async (id,jwt, body) => {
     
     return null; 
   }
+};
+export const printBudget = async (id,jwt) => {
+  try {
+    const response = await axios.post(`${URL_BUDGET}/print/${id}`,{}, { 
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwt}`,
+      },
+      responseType: 'blob', 
+    }
+  );
+
+  const blob = new Blob([response.data], { type: 'application/pdf' });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', 'proveStock.pdf');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  return { data: response.data };
+} catch (error) {
+  console.error(error);
+  return null;
+}
 };
 export const createBudget = async (jwt, body) => {
   try {

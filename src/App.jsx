@@ -19,7 +19,6 @@ function App() {
     sessionStorage.setItem("user", JSON.stringify(nuevosDatos));
   };
   useEffect(()=>{
-    console.log("desde app", usuarioLogeado);
     
   },[usuarioLogeado])
   return (

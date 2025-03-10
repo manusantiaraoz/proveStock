@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import { createProduct, modProduct } from "../../../helpers/product";
+import { createProvider, modProvider } from "../../../helpers/provider";
 
-function ModProduct({ show, handleClose, product, provider, fetchData, jwt, isEditing }) {
+function ModalProv({ show, handleClose, prov, fetchDataProv, jwt, isEditing }) {
   const {
     register,
     handleSubmit,
@@ -14,29 +14,26 @@ function ModProduct({ show, handleClose, product, provider, fetchData, jwt, isEd
   } = useForm();
 
   useEffect(() => {
-    if (product && product.provider && isEditing) {  
-        setValue("name", product.name);
-        setValue("detail", product.detail);
-        setValue("p_purchase", product.p_purchase);
-        setValue("p_sale", product.p_sale);
-        setValue("stock", product.stock);
-        setValue("providerId", product.provider.id);
+    if (prov && isEditing) {  
+        setValue("name", prov.name);
+        setValue("phone", prov.phone);
+        setValue("address", prov.address);
+        setValue("dni", prov.dni);
+        setValue("email", prov.email);
       }else if (!isEditing){
         reset()
       }
-  }, [setValue, product,isEditing]);
+  }, [setValue, prov,isEditing]);
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
-    actualizarProducto(data)
+    actualizarProv(data)
   };
-  const actualizarProducto= async(data)=>{
+  const actualizarProv= async(data)=>{
     try {
       let result;
       if(isEditing){
-        console.log(data);
-        
-         result = await modProduct(product.id, jwt, data)
+         result = await modProvider(prov.id, jwt, data)
          if(!result){
            throw new Error("no se pudo actualizar")
          }
@@ -47,7 +44,7 @@ function ModProduct({ show, handleClose, product, provider, fetchData, jwt, isEd
            draggable: true
           });
         } else{
-          result = await createProduct(jwt, data)
+          result = await createProvider(jwt, data)
           if(!result){
             throw new Error("no se pudo crear")
           }
@@ -58,7 +55,7 @@ function ModProduct({ show, handleClose, product, provider, fetchData, jwt, isEd
           draggable: true
         });
       }
-        fetchData()
+      fetchDataProv()
         
       } catch (error) {
         console.error("Error en onSubmit:", error.message);
@@ -69,7 +66,7 @@ function ModProduct({ show, handleClose, product, provider, fetchData, jwt, isEd
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         {
-          isEditing?<Modal.Title >Modificar Producto</Modal.Title>:<Modal.Title >Crear Producto</Modal.Title>
+          isEditing?<Modal.Title >Modificar cliente</Modal.Title>:<Modal.Title >Crear cliente</Modal.Title>
         }
       </Modal.Header>
       <Modal.Body>
@@ -77,7 +74,7 @@ function ModProduct({ show, handleClose, product, provider, fetchData, jwt, isEd
           <div className="mb-1">
             <label>nombre</label>
             <input
-              placeholder="nombre de tu empresa"
+              placeholder="nombre"
               className="input-group-text w-100 text-start"
               type="text"
               {...register("name", {
@@ -93,99 +90,70 @@ function ModProduct({ show, handleClose, product, provider, fetchData, jwt, isEd
             )}
           </div>
           <div className="mb-1">
-          <label>detalle</label>
+          <label>phone</label>
             <input
             type="text"
+              placeholder="380303456"
               className="input-group-text w-100 text-start"
-              {...register("detail", {
+              {...register("phone", {
                 required: true,
-                minLength:10,
-                maxLength:250
+                minLength:9,
+                maxLength:15,
               })}
             />
-            {errors.detail && (
+            {errors.phone && (
               <span className="fs-6 text-danger">
-                campo obligatorio, debe contener entre 10 y 250 caracteres
+                campo obligatorio, debe tener entre 9 y 15 digitos
               </span>
             )}
           </div>
           <div className="mb-1">
-          <label>precio de compra</label>
-            <input
-            type="text"
-              placeholder="22.33"
-              className="input-group-text w-100 text-start"
-              {...register("p_purchase", {
-                required: true,
-                min:1,
-                max:1000000,
-                pattern: /^\d+(\.\d{1,2})?$/,
-              })}
-            />
-            {errors.p_purchase && (
-              <span className="fs-6 text-danger">
-                campo obligatorio, el precio debe encontrarse entre 1 y 1 millon
-              </span>
-            )}
-          </div>
-          <div className="mb-1">
-          <label>precio de venta</label>
+          <label>direccion</label>
             <input
               type="text"
               className="input-group-text w-100 text-start"
-              {...register("p_sale", {
+              {...register("address", {
                 required: true,
-                minLength:1,
-                maxLength:6,
-                max:1000000,
-                min:1
+                minLength:10,
+                maxLength:100,
               })}
             />
-            {errors.p_sale && (
+            {errors.address && (
               <span className="fs-6 text-danger">
-                campo obligatorio, el precio debe encontrarse entre 1 y 1 millon
+                campo obligatorio, extencion minima 10 caracteres y el maximo 100
               </span>
             )}
           </div>
           <div className="mb-1">
-          <label>stock</label>
+          <label>DNI</label>
             <input
-              type="number"
+              type="text"
               className="input-group-text w-100 text-start"
-              {...register("stock", {
+              {...register("dni", {
                 required: true,
-                max:1000,
-                min:1
+                minLength:8,
+                maxLength:12,
               })}
             />
-            {errors.p_sale && (
+            {errors.dni && (
               <span className="fs-6 text-danger">
-                campo obligatorio, el precio debe encontrarse entre 1 y 1 millon
+                campo obligatorio, extencion minima 8 caracteres y el maximo 12
               </span>
             )}
           </div>
           <div className="mb-1">
-            <label>proveedor</label>
-            <div className="input-group mb-3">
-              <label className="input-group-text" htmlFor="inputGroupSelect01">
-                Options
-              </label>
-              <select
-                className="form-select"
-                id="inputGroupSelect01"
-                {...register("providerId", { required: true })}
-                defaultValue={product?.provider?.id}
-              >
-                <option value="">selecionar</option>
-                {provider.map((prov) => (
-                  <option key={prov.id} value={prov.id}>
-                    {prov.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            {errors.providerId && (
-              <span className="fs-6 text-danger">campo obligatorio</span>
+          <label>email</label>
+            <input
+              type="email"
+              className="input-group-text w-100 text-start"
+              {...register("email", {
+                required: true,
+              })}
+            />
+            {errors.dni && (
+              <span className="fs-6 text-danger">
+                campo obligatorio, extencion minima 8 caracteres y el maximo 12
+              </span>
             )}
           </div>
             {
@@ -199,4 +167,4 @@ function ModProduct({ show, handleClose, product, provider, fetchData, jwt, isEd
   );
 }
 
-export default ModProduct;
+export default ModalProv;

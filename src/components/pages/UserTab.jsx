@@ -8,35 +8,14 @@ import ModUserModal from "./users/ModUserModal";
 
 const jwt = sessionStorage.getItem("accessToken") || null;
 
-const UserTab = ({actualizarDatos, usuarioLogeado}) => {
-  const [userData, setUserData] = useState(null); 
+const UserTab = ({actualizarDatos, userData, fetchDataUser}) => {
+ 
   const [showModal, setShowModal] = useState(false);
-  const user = usuarioLogeado;
-  console.log(user);
-  
-  useEffect(() => {
-    const fetchData = async () => { 
-      try {
-       
-        const result = await getUser(user.id, jwt); 
-        if (result && result.data) {
-          setUserData(result.data); 
-        }
-      } catch (e) {
-        console.error("Error fetching user data:", e); 
-      }
-    };
-
-    if (user && jwt) {
-        fetchData();
-    }
-
-  }, [user, jwt]); // Dependencias del useEffect
 
   if (!userData) {
     return <article><p>Cargando datos del usuario...</p></article>; // Mensaje de carga
   }
-  console.log(userData);
+ 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
@@ -53,7 +32,7 @@ const UserTab = ({actualizarDatos, usuarioLogeado}) => {
     <Button className="colorPrimario text-light" variant="light" onClick={handleShowModal}>
         Modificar
       </Button>
-      <ModUserModal show={showModal} handleClose={handleCloseModal} userData ={userData} setUserData={setUserData} actualizarDatos={actualizarDatos} jwt={jwt}></ModUserModal>
+      <ModUserModal show={showModal} handleClose={handleCloseModal} userData ={userData} fetchDataUser={fetchDataUser} actualizarDatos={actualizarDatos} jwt={jwt}></ModUserModal>
   </div>
   </div>
 

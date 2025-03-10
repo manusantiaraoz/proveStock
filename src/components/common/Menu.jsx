@@ -21,8 +21,8 @@ const Menu = ({ usuarioLogeado, setUsuarioLogeado }) => {
   return (
     <>
       <Navbar expand="lg" className="colorPrimario">
-        <Container>
-          <Navbar.Brand href="#home" className="text-white">
+        <>
+          <Navbar.Brand href="#home" className=" ms-4 text-white">
             <img
               alt=""
               src={logo}
@@ -35,16 +35,16 @@ const Menu = ({ usuarioLogeado, setUsuarioLogeado }) => {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
+            <Nav className="ms-auto me-4">
               <NavLink end className="nav-link" to="/">
                 Inicio
               </NavLink>
               {usuarioLogeado ? (
                 <>
                   {usuarioLogeado.role === "USER" ? (
-                    <p end className="nav-link text-white">
-                     ¡hola {usuarioLogeado.name}!
-                    </p>
+                    <NavLink  className="nav-link text-white">
+                     ¡{usuarioLogeado.name}!
+                    </NavLink>
                   ) : usuarioLogeado.role === "SUPERADMIN" ? (
                     <NavLink end className="nav-link" to="/">
                       SUPERADMIN
@@ -63,7 +63,7 @@ const Menu = ({ usuarioLogeado, setUsuarioLogeado }) => {
               )}
             </Nav>
           </Navbar.Collapse>
-        </Container>
+        </>
       </Navbar>
     </>
   );
