@@ -20,47 +20,45 @@ function BudgetModal({
     formState: { errors },
     watch,
   } = useForm();
-  const [quantities, setQuantities] = useState({}); // Estado para las cantidades
-  const [subtotals, setSubtotals] = useState({});
-  const [totalGeneral, setTotalGeneral] = useState(0);
+  const [quantities, setQuantities] = useState({});
+  const [checkedProducts, setCheckedProducts] = useState({});
 
-  const handleQuantityChange = (productId, quantity, price, checked) => {
-    if (checked) {
-      const parsedQuantity = parseInt(quantity);
-      setQuantities({ ...quantities, [productId]: parsedQuantity });
-      const subtotal = parsedQuantity * price;
-      setSubtotals({ ...subtotals, [productId]: subtotal });
-    } else {
-      const newQuantities = { ...quantities };
-      delete newQuantities[productId];
-      setQuantities(newQuantities);
+  const handleCheckboxChange = (productId, checked) => {
+    setCheckedProducts((prevChecked) => ({
+      ...prevChecked,
+      [productId]: checked,
+    }));
 
-      const newSubtotals = { ...subtotals };
-      delete newSubtotals[productId];
-      setSubtotals(newSubtotals);
-    }
+    setQuantities((prevQuantities) => {
+      const newQuantities = { ...prevQuantities };
+      if (!checked) {
+        delete newQuantities[productId];
+      } else if (newQuantities[productId] === undefined) {
+        newQuantities[productId] = 1;
+      }
+      return newQuantities;
+    });
   };
 
-  useEffect(() => {
-    if (budget) {
-      reset();
-    }
-  }, [reset, budget]);
-  useEffect(() => {
-    let total = 0;
-    Object.values(subtotals).forEach((subtotal) => {
-      total += subtotal;
+  const handleQuantityInputChange = (productId, quantity) => {
+    setQuantities((prevQuantities) => {
+      const newQuantities = { ...prevQuantities };
+      const parsedQuantity = parseInt(quantity);
+      if (!isNaN(parsedQuantity) && parsedQuantity >= 0) {
+        newQuantities[productId] = parsedQuantity;
+      }
+      return newQuantities;
     });
-    setTotalGeneral(total);
-  }, [subtotals]);
+  };
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
 
-    const selectedProducts = (data.productIds || []).map((productId) => ({
+    const selectedProducts = Object.keys(quantities).map((productId) => ({
       quantity: quantities[productId] || 1,
       productId: productId,
     }));
+
     if (selectedProducts.length === 0) {
       Swal.fire({
         title: "Advertencia",
@@ -71,6 +69,7 @@ function BudgetModal({
       });
       return;
     }
+
     const datos = {
       clientId: data.client,
       detail: data.detail,
@@ -88,13 +87,13 @@ function BudgetModal({
         throw new Error("no se pudo crear");
       }
       Swal.fire({
-        title: "producto creado!",
+        title: "presupuesto creado!",
         icon: "success",
         background: "#faf5e5",
         draggable: true,
       });
       fetchData();
-      reset()
+      reset();
     } catch (error) {
       console.error("Error en onSubmit:", error.message);
     }
@@ -102,8 +101,8 @@ function BudgetModal({
 
   return (
     <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        {<Modal.Title>Crear cliente</Modal.Title>}
+      <Modal.Header className="bg-secondary text-light" closeButton>
+        {<Modal.Title>Crear Presupuesto</Modal.Title>}
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column">
@@ -150,46 +149,38 @@ function BudgetModal({
                         name="productIds"
                         value={prod.id}
                         {...register("productIds")}
+                        checked={checkedProducts[prod.id] || false}
                         onChange={(e) =>
-                          handleQuantityChange(
-                            prod.id,
-                            quantities[prod.id] || 1,
-                            prod.p_sale,
-                            e.target.checked
-                          )
+                          handleCheckboxChange(prod.id, e.target.checked)
                         }
                       />
                     </th>
-                    <th for={prod.name}>{prod.name}</th>
-                    <th for={prod.p_sale}>{prod.p_sale}</th>
+                    <th htmlFor={prod.name}>{prod.name}</th>
+                    <th htmlFor={prod.p_sale}>{prod.p_sale}</th>
                     <th>
                       <input
                         type="number"
-                        id="cuantity"
-                        {...register("cuantity")}
+                        id={`cuantity-${prod.id}`}
+                        {...register(`cuantity-${prod.id}`)} // Registro único
                         max={prod.stock}
                         placeholder={prod.stock + " disponibles"}
                         value={quantities[prod.id] || ""}
                         onChange={(e) =>
-                          handleQuantityChange(
-                            prod.id,
-                            e.target.value,
-                            prod.p_sale,
-                            true
-                          )
+                          handleQuantityInputChange(prod.id, e.target.value)
                         }
+                        disabled={!checkedProducts[prod.id]}
                       />
+                      <label className="text-danger">{prod.stock} disponible</label>
                     </th>
                   </tr>
                 ))}
               </tbody>
-              
             </table>
           </div>
           <div className="mb-1">
             <label>detalle</label>
             <input
-              placeholder="nombre"
+              placeholder="detalle del equipo a trabajar o info que dio el cliente"
               className="input-group-text w-100 text-start"
               type="text"
               {...register("detail", {
@@ -204,8 +195,10 @@ function BudgetModal({
               </span>
             )}
           </div>
-            <h6 className="text-end">total: ${totalGeneral.toFixed(2)}</h6>
-          <input className=" btn btn-warning text-light" type="submit" />
+
+          <Modal.Footer>
+            <input className=" btn btn-warning w-100" type="submit" />
+          </Modal.Footer>
         </form>
       </Modal.Body>
     </Modal>

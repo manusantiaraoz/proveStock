@@ -8,6 +8,7 @@ import Login from "./components/pages/login";
 import RutasProtegidas from "./components/routes/RutasProtegidas";
 import RutasUser from "./components/routes/RutasUser";
 import Menu from "./components/common/Menu";
+import RutaAdmin from "./components/routes/rutaAdmin";
 
 
 function App() {
@@ -35,8 +36,17 @@ function App() {
           exact
           path="/user/*"
           element={
-            <RutasProtegidas rolesPermitidos = {['USER', 'SUPERADMIN']} usuarioLogeado ={usuarioLogeado} >
+            <RutasProtegidas rolesPermitidos = {['USER']} usuarioLogeado ={usuarioLogeado} >
               <RutasUser usuarioLogeado ={usuarioLogeado} actualizarDatos={actualizarDatos}></RutasUser>
+            </RutasProtegidas>
+          }
+        ></Route>
+        <Route
+          exact
+          path="/admin/*"
+          element={
+            <RutasProtegidas rolesPermitidos = {['SUPERADMIN']} usuarioLogeado ={usuarioLogeado} >
+              <RutaAdmin usuarioLogeado ={usuarioLogeado} actualizarDatos={actualizarDatos}></RutaAdmin>
             </RutasProtegidas>
           }
         ></Route>

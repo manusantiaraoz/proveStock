@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Nav, Container, Button } from "react-bootstrap";
+import { Navbar, Nav, Button } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../../../public/logo4.jfif";
 
@@ -7,6 +7,7 @@ const Menu = ({ usuarioLogeado, setUsuarioLogeado }) => {
   const navegacion = useNavigate();
   const logout = () => {
     sessionStorage.removeItem("user");
+    sessionStorage.removeItem("accessToken")
     setUsuarioLogeado(null);
     navegacion("/");
   };
@@ -42,12 +43,17 @@ const Menu = ({ usuarioLogeado, setUsuarioLogeado }) => {
               {usuarioLogeado ? (
                 <>
                   {usuarioLogeado.role === "USER" ? (
+                    <>
                     <NavLink  className="nav-link text-white">
                      ¡{usuarioLogeado.name}!
                     </NavLink>
+                    <NavLink  className="nav-link" to="/user">
+                     Panel
+                    </NavLink>
+                  </>
                   ) : usuarioLogeado.role === "SUPERADMIN" ? (
-                    <NavLink end className="nav-link" to="/">
-                      SUPERADMIN
+                    <NavLink end className="nav-link" to="/admin">
+                      administrador
                     </NavLink>
                   ) : null}
                   {usuarioLogeado?.role === "USER" || usuarioLogeado?.role === "SUPERADMIN" ? (

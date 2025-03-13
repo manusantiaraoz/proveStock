@@ -4,6 +4,7 @@ import { delClient } from "../../../helpers/client";
 import ClientItem from "./clientItem";
 import ModalClient from "./modalClient";
 import { Table } from "react-bootstrap";
+import { PlusCircle } from "react-bootstrap-icons";
 
 
 const ClientTab = ({clients, fetchDataClient}) => {
@@ -54,7 +55,9 @@ const ClientTab = ({clients, fetchDataClient}) => {
   }, []);
   return (
     <article className="container">
-      <button className="btn btn-primary my-2" onClick={() => handleShowModal(null, false)}>cliente</button>
+      <div className=" d-flex justify-content-end">
+      <button className="btn btn-secondary border-1 border-info my-2" onClick={() => handleShowModal(null, false)}> <PlusCircle></PlusCircle> Nuevo Cliente</button>
+      </div>
       <Table responsive>
       <thead>
         <tr className="glass-efect">

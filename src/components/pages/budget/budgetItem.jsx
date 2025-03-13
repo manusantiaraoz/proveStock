@@ -46,10 +46,10 @@ const BudgetItem = ({ budget,EliminarBudget, printBudgetFunc, confirmBudget }) =
         >
           PENDING
         </button>:<button
-              className="btn btn-outline-success m-2"
+              className="btn btn-outline-success m-2 d-flex"
               disabled
             >
-              <CheckCircleFill></CheckCircleFill>
+              <CheckCircleFill className="me-2 "></CheckCircleFill> CONFIRM
             </button>
            }
             

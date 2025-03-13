@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { createProduct, modProduct } from "../../../helpers/product";
 
+
 function ModProduct({ show, handleClose, product, provider, fetchData, jwt, isEditing }) {
   const {
     register,

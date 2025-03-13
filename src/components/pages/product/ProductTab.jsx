@@ -3,6 +3,7 @@ import ProductItem from "./ProductItem";
 import { delProduct, getProduct } from "../../../helpers/product";
 import Swal from "sweetalert2";
 import ModProduct from "./modalProduct";
+import { PlusCircle } from "react-bootstrap-icons";
 
 
 const ProductTab = ({provider, product ,fetchDataProduct}) => {
@@ -51,7 +52,9 @@ const ProductTab = ({provider, product ,fetchDataProduct}) => {
   }, []);
   return (
     <article className="container">
-      <button className="btn btn-primary" onClick={() => handleShowModal(null, false)}>Crear Producto</button>
+      <div className=" d-flex justify-content-end">
+      <button className="btn btn-secondary border-1 border-info my-2 " onClick={() => handleShowModal(null, false)}><PlusCircle ></PlusCircle> Nuevo Producto</button>
+      </div>
     
       
       {product.map((prod, posicion) => (

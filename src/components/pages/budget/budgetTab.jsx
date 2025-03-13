@@ -7,7 +7,7 @@ import BudgetItem from "./budgetItem";
 import { PlusCircle } from "react-bootstrap-icons";
 
 
-const BudgetTab = ({budget, fetchDataBudget,product, clients}) => {
+const BudgetTab = ({budget, fetchDataBudget,product, clients, fetchDataProduct}) => {
   const jwt = sessionStorage.getItem("accessToken") || null;
   const listBudget = budget
   const [showModal, setShowModal] = useState(false);
@@ -29,13 +29,14 @@ const BudgetTab = ({budget, fetchDataBudget,product, clients}) => {
   }
   const confirmBudget= async(id)=>{
     try{
-     const result =  conBudget(id,jwt)
+     const result = await conBudget(id,jwt)
      if (result && result.data) {
       Swal.fire({
         title: "presupuesto confirmado",
         icon: "success",
       });
-      fetchDataBudget();
+     await fetchDataBudget();
+     await fetchDataProduct()
     }
     }catch(e){
       console.error("error en confirmar presupuesto", error);
@@ -61,7 +62,7 @@ const BudgetTab = ({budget, fetchDataBudget,product, clients}) => {
             title: "presupuesto borrado",
             icon: "success",
           });
-          fetchDataBudget();
+         await fetchDataBudget();
         }
       }
     } catch (error) {
@@ -72,10 +73,13 @@ const BudgetTab = ({budget, fetchDataBudget,product, clients}) => {
 
   useEffect(() => {
     fetchDataBudget();
+    fetchDataProduct()
   }, []);
   return (
     <article className="container">
-      <button className="btn btn-secondary my-2" onClick={() => handleShowModal(null, false)}><PlusCircle></PlusCircle> presupuesto</button>
+      <div className=" d-flex justify-content-end">
+      <button className="btn btn-secondary my-2" onClick={() => handleShowModal(null, false)}><PlusCircle></PlusCircle> Nuevo presupuesto</button>
+      </div>
       <Table responsive>
       <thead>
         <tr className="glass-efect">

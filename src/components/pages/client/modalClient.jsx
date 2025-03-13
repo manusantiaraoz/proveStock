@@ -39,7 +39,7 @@ function ModalClient({ show, handleClose, client, fetchData, jwt, isEditing }) {
            throw new Error("no se pudo actualizar")
          }
          Swal.fire({
-           title: "datos de producto actualizado!",
+           title: "datos de cliente actualizado!",
            icon: "success",
            background:"#faf5e5",
            draggable: true
@@ -50,7 +50,7 @@ function ModalClient({ show, handleClose, client, fetchData, jwt, isEditing }) {
             throw new Error("no se pudo crear")
           }
         Swal.fire({
-          title: "producto creado!",
+          title: "cliente creado!",
           icon: "success",
           background:"#faf5e5",
           draggable: true
@@ -97,7 +97,7 @@ function ModalClient({ show, handleClose, client, fetchData, jwt, isEditing }) {
               className="input-group-text w-100 text-start"
               {...register("lastName", {
                 required: true,
-                minLength:10,
+                minLength:2,
                 maxLength:250
               })}
             />

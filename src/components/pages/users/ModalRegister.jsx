@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
-import { modUser } from "../../../helpers/user";
+import { createUser, modUser } from "../../../helpers/user";
 import Swal from "sweetalert2";
-
-function ModUserModal({ show, handleClose, userData, fetchDataUser, actualizarDatos }) {
+function ModalRegister({ show, handleClose, fetchDataUsers }) {
   const jwt = sessionStorage.getItem("accessToken") || null;
   const {
     register,
@@ -15,30 +14,26 @@ function ModUserModal({ show, handleClose, userData, fetchDataUser, actualizarDa
   } = useForm();
 
   useEffect(() => {
-    setValue("email", userData.email);
-    setValue("address", userData.address);
-    setValue("name", userData.name);
-    setValue("dni", userData.dni);
-    setValue("phone", userData.phone);
-    setValue("password", userData.password);
-  }, [userData, setValue]);
+    setValue("email", "");
+    setValue("dni", "");;
+    setValue("password", "");
+  }, []);
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
     try {
-      const result = await modUser(userData.id,jwt, data)
+      const result = await createUser(jwt, data)
       if(!result){
         Swal.fire({
-          title: "no se pudieron actualizar los datos",
+          title: "no se pudo crear el usuario",
           icon: "error",
           background:"#faf5e5",
           draggable: true
         });
       }
-      fetchDataUser();
-      actualizarDatos(result.data);
+      fetchDataUsers();
       Swal.fire({
-        title: "datos de usuario actualizado!",
+        title: "usuario creado!",
         icon: "success",
         background:"#faf5e5",
         draggable: true
@@ -51,32 +46,15 @@ function ModUserModal({ show, handleClose, userData, fetchDataUser, actualizarDa
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title >Modificar Usuario</Modal.Title>
+        <Modal.Title >Crear Usuario</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column">
-          <div className="mb-1">
-            <label>nombre</label>
-            <input
-              placeholder="nombre de tu empresa"
-              className="input-group-text w-100 text-start"
-              type="text"
-              {...register("name", {
-                required: true,
-                minLength:2,
-                maxLength:50
-              })}
-            />
-            {errors.name && (
-              <span className="fs-6 text-danger">
-                campo obligatorio, debe contener entre 2 y 50 caracteres
-              </span>
-            )}
-          </div>
           <div className="">
+            <label>email</label>
             <input
             type="email"
-            hidden
+            
               placeholder="example@gmail.com"
               className="input-group-text w-100 text-start"
               {...register("email", {
@@ -107,44 +85,10 @@ function ModUserModal({ show, handleClose, userData, fetchDataUser, actualizarDa
               </span>
             )}
           </div>
-          <div className="mb-1">
-          <label>telefono</label>
-            <input
-              type="text"
-              className="input-group-text w-100 text-start"
-              {...register("phone", {
-                required: true,
-                minLength:9,
-                maxLength:15
-              })}
-            />
-            {errors.phone && (
-              <span className="fs-6 text-danger">
-                campo obligatorio, debe contener entre 9 y 15 caracteres
-              </span>
-            )}
-          </div>
-          <div className="mb-1">
-          <label>direccion</label>
-            <input
-            type="text"
-              placeholder="example@gmail.com"
-              className="input-group-text w-100 text-start"
-              {...register("address", {
-                required: true,
-                minLength:10,
-                maxLength:100
-              })}
-            />
-            {errors.address && (
-              <span className="fs-6 text-danger">
-                campo obligatorio, debe contener entre 10 y 100 caracteres
-              </span>
-            )}
-          </div>
+          
           <div className="mb-4">
-            <label className="text-danger">
-              si desea actulizar contraseña, ingrese una nueva
+            <label className="">
+              password
             </label>
             <input
               placeholder="*******"
@@ -169,4 +113,4 @@ function ModUserModal({ show, handleClose, userData, fetchDataUser, actualizarDa
   );
 }
 
-export default ModUserModal;
+export default ModalRegister;

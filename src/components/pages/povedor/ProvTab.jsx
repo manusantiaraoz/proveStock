@@ -5,6 +5,7 @@ import { Table } from "react-bootstrap";
 import { delProvider, getProvider } from "../../../helpers/provider";
 import ProvItem from "./ProvItem";
 import ModalProv from "./modalProv";
+import { PlusCircle } from "react-bootstrap-icons";
 
 
 const ProvTab = ({prov, fetchDataProv}) => {
@@ -55,7 +56,9 @@ const ProvTab = ({prov, fetchDataProv}) => {
   }, []);
   return (
     <article className="container">
-      <button className="btn btn-primary my-2" onClick={() => handleShowModal(null, false)}>cliente</button>
+      <div className=" d-flex justify-content-end">
+      <button className="btn btn-secondary border-1 border-info my-2  " onClick={() => handleShowModal(null, false)}><PlusCircle></PlusCircle> Nuevo proveedor</button>
+      </div>
       <Table responsive>
       <thead>
         <tr className="glass-efect">

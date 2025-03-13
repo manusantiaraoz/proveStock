@@ -38,7 +38,7 @@ function ModalProv({ show, handleClose, prov, fetchDataProv, jwt, isEditing }) {
            throw new Error("no se pudo actualizar")
          }
          Swal.fire({
-           title: "datos de producto actualizado!",
+           title: "datos de proveedor actualizado!",
            icon: "success",
            background:"#faf5e5",
            draggable: true
@@ -49,7 +49,7 @@ function ModalProv({ show, handleClose, prov, fetchDataProv, jwt, isEditing }) {
             throw new Error("no se pudo crear")
           }
         Swal.fire({
-          title: "producto creado!",
+          title: "proveedor creado!",
           icon: "success",
           background:"#faf5e5",
           draggable: true
@@ -66,7 +66,7 @@ function ModalProv({ show, handleClose, prov, fetchDataProv, jwt, isEditing }) {
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         {
-          isEditing?<Modal.Title >Modificar cliente</Modal.Title>:<Modal.Title >Crear cliente</Modal.Title>
+          isEditing?<Modal.Title >Modificar proveedor</Modal.Title>:<Modal.Title >Crear proveedor</Modal.Title>
         }
       </Modal.Header>
       <Modal.Body>
@@ -150,9 +150,9 @@ function ModalProv({ show, handleClose, prov, fetchDataProv, jwt, isEditing }) {
                 required: true,
               })}
             />
-            {errors.dni && (
+            {errors.email && (
               <span className="fs-6 text-danger">
-                campo obligatorio, extencion minima 8 caracteres y el maximo 12
+                campo obligatorio
               </span>
             )}
           </div>

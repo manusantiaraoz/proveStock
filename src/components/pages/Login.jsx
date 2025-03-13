@@ -42,7 +42,11 @@ const Login = ({setUsuarioLogeado}) => {
         text: `hola ${user.name} que tengas una jornada productiva`,
       });
       setUsuarioLogeado(user)
-      navegacion('/user')
+      if(user.role ==='USER'){
+        navegacion('/user')
+      }else if(user.role === 'SUPERADMIN'){
+        navegacion('/admin')
+      }
     } catch (e) {
       console.error("Error en loggerUser:", e);
       Swal.fire({
@@ -105,7 +109,7 @@ const Login = ({setUsuarioLogeado}) => {
                   </span>
                 )}
               </div>
-              <input className="btn btn-dark" type="submit" />
+              <input className="btn btn-dark" type="submit" value="ingresar"/>
             </form>
           </div>
         </div>

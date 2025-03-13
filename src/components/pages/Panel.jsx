@@ -83,13 +83,15 @@ const [product, setProduct] = useState([]);
       console.error("Error fetching product data:", e);
     }
   };
-
+  const traerTodosLosDatos = ()=>{
+    fetchDataProv(),
+    fetchDataUser(),
+    fetchDataProduct(),
+    fetchDataClient(),
+    fetchDataBudget()
+  }
     useEffect(()=>{
-      fetchDataProv(),
-      fetchDataUser(),
-      fetchDataProduct(),
-      fetchDataClient(),
-      fetchDataBudget()
+    traerTodosLosDatos()
     },[])
     return (
         <section className='mainPage'>
@@ -112,7 +114,7 @@ const [product, setProduct] = useState([]);
         <ClientTab clients={clients} fetchDataClient={fetchDataClient}></ClientTab>
       </Tab>
       <Tab eventKey="presupuesto" title="presupuestos">
-       <BudgetTab budget={budget} fetchDataBudget={fetchDataBudget} product={product} clients={clients}></BudgetTab>
+       <BudgetTab budget={budget} fetchDataBudget={fetchDataBudget} product={product} clients={clients} fetchDataProduct={fetchDataProduct}></BudgetTab>
       </Tab>
     </Tabs>
 
