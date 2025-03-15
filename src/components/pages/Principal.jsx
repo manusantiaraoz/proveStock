@@ -17,7 +17,7 @@ const Principal = () => {
         <h4 className=" controlTexto  ms-5">todo lo que necesitas para transformar tu emprendimiento</h4>
         <div className="d-flex justify-content-center align-content-center flex-wrap">
 
-        <button className="btn btn-light w-50">comunicate con nosotros</button>
+        <a className="btn btn-light w-50" href="https://wa.me/+3815984662" target="_blank"> comunicate con nosotros</a>
         </div>
             </div>        
         </div>
